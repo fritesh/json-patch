@@ -155,7 +155,7 @@ public final class JsonPatch
         return operations.toString();
     }
 
-    @Override
+
     public void serialize(final JsonGenerator jgen,
         final SerializerProvider provider)
         throws IOException
@@ -166,7 +166,7 @@ public final class JsonPatch
         jgen.writeEndArray();
     }
 
-    @Override
+
     public void serializeWithType(final JsonGenerator jgen,
         final SerializerProvider provider, final TypeSerializer typeSer)
         throws IOException

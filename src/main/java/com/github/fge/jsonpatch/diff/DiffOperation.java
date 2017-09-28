@@ -22,6 +22,8 @@ package com.github.fge.jsonpatch.diff;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jsonpatch.AddOperation;
+import com.github.fge.jsonpatch.ArrayObjectRemoveOperation;
+import com.github.fge.jsonpatch.ArrayObjectReplaceOperation;
 import com.github.fge.jsonpatch.CopyOperation;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.MoveOperation;
@@ -40,42 +42,45 @@ final class DiffOperation
     /* An op's "value", if any */
     private final JsonNode value;
 
-    static DiffOperation add(final JsonPointer path,
-        final JsonNode value)
+    static DiffOperation add(final JsonPointer path, final JsonNode value)
     {
         return new DiffOperation(Type.ADD, null, null, path, value);
     }
 
-    static DiffOperation copy(final JsonPointer from,
-        final JsonPointer path, final JsonNode value)
+    static DiffOperation copy(final JsonPointer from,final JsonPointer path, final JsonNode value)
     {
         return new DiffOperation(Type.COPY, from, null, path,
             value);
     }
 
-    static DiffOperation move(final JsonPointer from,
-        final JsonNode oldValue, final JsonPointer path,
+    static DiffOperation move(final JsonPointer from,final JsonNode oldValue, final JsonPointer path,
         final JsonNode value)
     {
         return new DiffOperation(Type.MOVE, from, oldValue, path,
             value);
     }
 
-    static DiffOperation remove(final JsonPointer from,
-        final JsonNode oldValue)
+    static DiffOperation remove(final JsonPointer from,final JsonNode oldValue)
     {
         return new DiffOperation(Type.REMOVE, from, oldValue, null, null);
     }
 
-    static DiffOperation replace(final JsonPointer from,
-        final JsonNode oldValue, final JsonNode value)
+    static DiffOperation replace(final JsonPointer from,final JsonNode oldValue, final JsonNode value)
     {
         return new DiffOperation(Type.REPLACE, from, oldValue, null,
             value);
     }
+    
+    static DiffOperation arrayObjectRemove(final JsonPointer from, final JsonNode oldValue) {
+		return new DiffOperation(Type.REMOVEARRAYOBJECT, from, oldValue, null, null);
+	}
 
-    private DiffOperation(final Type type, final JsonPointer from,
-        final JsonNode oldValue, final JsonPointer path,
+	static DiffOperation arrayObjectReplace(final JsonPointer from, final JsonNode oldValue, final JsonNode value) {
+		return new DiffOperation(Type.REPLACEARRAYOBJECT, from, oldValue, null, value);
+	}
+
+
+    private DiffOperation(final Type type, final JsonPointer from,final JsonNode oldValue, final JsonPointer path,
         final JsonNode value)
     {
         this.type = type;
@@ -156,6 +161,18 @@ final class DiffOperation
                 return new ReplaceOperation(op.from, op.value);
             }
         },
+    	REMOVEARRAYOBJECT {
+			@Override
+			JsonPatchOperation toOperation(final DiffOperation op) {
+				return new ArrayObjectRemoveOperation(op.from, op.oldValue);
+			}
+		},
+		REPLACEARRAYOBJECT {
+			@Override
+			JsonPatchOperation toOperation(final DiffOperation op) {
+				return new ArrayObjectReplaceOperation(op.from, op.oldValue, op.value);
+			}
+		},
         ;
 
         abstract JsonPatchOperation toOperation(final DiffOperation op);

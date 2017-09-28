@@ -92,7 +92,7 @@ final class ObjectMergePatch
         return ret;
     }
 
-    @Override
+
     public void serialize(final JsonGenerator jgen,
         final SerializerProvider provider)
         throws IOException, JsonProcessingException
@@ -117,7 +117,7 @@ final class ObjectMergePatch
         jgen.writeEndObject();
     }
 
-    @Override
+
     public void serializeWithType(final JsonGenerator jgen,
         final SerializerProvider provider, final TypeSerializer typeSer)
         throws IOException, JsonProcessingException

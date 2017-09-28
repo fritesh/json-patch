@@ -49,7 +49,7 @@ final class NonObjectMergePatch
         return node;
     }
 
-    @Override
+
     public void serialize(final JsonGenerator jgen,
         final SerializerProvider provider)
         throws IOException, JsonProcessingException
@@ -57,7 +57,7 @@ final class NonObjectMergePatch
         jgen.writeTree(node);
     }
 
-    @Override
+
     public void serializeWithType(final JsonGenerator jgen,
         final SerializerProvider provider, final TypeSerializer typeSer)
         throws IOException, JsonProcessingException

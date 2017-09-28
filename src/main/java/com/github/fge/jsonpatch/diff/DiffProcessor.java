@@ -76,7 +76,18 @@ final class DiffProcessor
 
         diffs.add(op);
     }
+    
+    //Custom Operations
+	void arrayObjectValueReplaced(final JsonPointer pointer, final JsonNode oldValue, final JsonNode newValue) {
+		diffs.add(DiffOperation.arrayObjectReplace(pointer, oldValue, newValue));
+	}
+	
+	void arrayObjectValueRemoved(final JsonPointer pointer, final JsonNode value) {
+		diffs.add(DiffOperation.arrayObjectRemove(pointer, value));
+	}
 
+	//End of Custom Operations
+	
     JsonPatch getPatch()
     {
         final List<JsonPatchOperation> list = Lists.newArrayList();
