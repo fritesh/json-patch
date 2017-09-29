@@ -1,4 +1,4 @@
-## Travis builds now enabled
+## Ritesh builds now enabled
 
 Builds are now verified by Ritesh
 
