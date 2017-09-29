@@ -1,14 +1,6 @@
 ## Travis builds now enabled
 
-Builds are now verified by Travis (see [issue #20](https://github.com/daveclayton/json-patch/issues/20) for details)
-
-https://travis-ci.org/daveclayton/json-patch
-
-## Read me first
-
-This project, as of version 1.4, is licensed under both LGPLv3 and ASL 2.0. See
-file LICENSE for more details. Versions 1.3 and lower are licensed under LGPLv3
-only.
+Builds are now verified by Ritesh
 
 ## What this is
 
@@ -21,7 +13,7 @@ Its features are:
 
 * {de,}serialization of JSON Patch and JSON Merge Patch instances with Jackson;
 * full support for RFC 6902 operations, including `test`;
-* JSON "diff" (RFC 6902 only) with operation factorization.
+* JSON "diff" (RFC 6902 only) with custom operations factorization.
 
 ## Versions
 
@@ -29,23 +21,7 @@ The current version is **1.9**. See file `RELEASE-NOTES.md` for details.
 
 ## Using it in your project
 
-With Gradle:
-
-```groovy
-dependencies {
-    compile(group: "com.github.fge", name: "json-patch", version: "yourVersionHere");
-}
-```
-
-With Maven:
-
-```xml
-<dependency>
-    <groupId>com.github.fge</groupId>
-    <artifactId>json-patch</artifactId>
-    <version>yourVersionHere</version>
-</dependency>
-```
+In-progress
 
 ## JSON "diff" factorization
 
@@ -120,8 +96,8 @@ final JsonNode patched = patch.apply(orig);
 The main class is `JsonDiff`. It returns the patch as a `JsonPatch` or as a `JsonNode`. Sample usage:
 
 ```java
-final JsonPatch patch = JsonDiff.asJsonPatch(source, target);
-final JsonNode patchNode = JsonDiff.asJson(source, target);
+final JsonPatch patch = JsonDiff.asJsonPatch(source, target, attributeKeyFieldMap);
+final JsonNode patchNode = JsonDiff.asJson(source, target, attributeKeyFieldMap);
 ```
 
 **Important note**: the API offers **no guarantee at all** about patch "reuse";
