@@ -28,26 +28,9 @@ In-progress
 When computing the difference between two JSON texts (in the form of `JsonNode` instances), the diff
 will factorize value removals and additions as moves and copies.
 
-For instance, given this node to patch:
-
-```json
-{ "a": "b" }
-```
-
-in order to obtain:
-
-```json
-{ "c": "b" }
-```
-
-the implementation will return the following patch:
-
-```json
-[ { "op": "move", "from": "/a", "path": "/c" } ]
-```
 
 This Library Supports Custom Operation in Case of Array
-as ...
+as ...(In-progress)
 
 
 It is able to do even more than that. See the test files in the project.
