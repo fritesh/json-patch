@@ -17,7 +17,7 @@ Its features are:
 
 ## Versions
 
-The current version is **1.9**. See file `RELEASE-NOTES.md` for details.
+The current version is **1.0**. See file `RELEASE-NOTES.md` for details.
 
 ## Using it in your project
 
@@ -45,6 +45,10 @@ the implementation will return the following patch:
 ```json
 [ { "op": "move", "from": "/a", "path": "/c" } ]
 ```
+
+This Library Supports Custom Operation in Case of Array
+as ...
+
 
 It is able to do even more than that. See the test files in the project.
 
