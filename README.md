@@ -141,7 +141,7 @@ final JsonNode patchNode = JsonDiff.asJson(source, target, attributeKeyFieldMap)
 attributeKeyFieldMap is the Map of <JsonPointer,String> ``read RFC6902 for JsonPointer.
 JsonPointer contains all the Key Fields Inside an Array object which you want to treat as primary Key.
 
-###Important note
+### Important note
 
 The API offers **no guarantee at all** about patch "reuse";
 that is, the generated patch is only guaranteed to safely transform the given
