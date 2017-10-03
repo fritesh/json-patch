@@ -90,8 +90,8 @@ final JsonNode patched = patch.apply(orig);
 The main class is `JsonDiff`. It returns the patch as a `JsonPatch` or as a `JsonNode`. Sample usage:
 
 ```java
-final JsonPatch patch = JsonDiff.asJsonPatch(source, target, attributeKeyFieldMap);
-final JsonNode patchNode = JsonDiff.asJson(source, target, attributeKeyFieldMap);
+final JsonPatch patch = JsonDiff.asJsonPatch(source, target);
+final JsonNode patchNode = JsonDiff.asJson(source, target);
 ```
 
 **Important note**: the API offers **no guarantee at all** about patch "reuse";
@@ -117,3 +117,18 @@ Applying a patch also uses an `.apply()` method:
 final JsonNode patched = patch.apply(orig);
 ```
 
+### JSON diff custom
+
+The main class is `JsonDiff`. It returns the patch as a `JsonPatch` or as a `JsonNode`. Sample usage:
+
+```java
+final JsonPatch patch = JsonDiff.asJsonPatch(source, target, attributeKeyFieldMap);
+final JsonNode patchNode = JsonDiff.asJson(source, target, attributeKeyFieldMap);
+```
+attributeKeyFieldMap is the Map of <JsonPointer,String> ``read RFC6902 for JsonPointer.
+JsonPointer contains all the Key Fields Inside an Array object which you want to treat as primary Key.
+
+**Important note**: the API offers **no guarantee at all** about patch "reuse";
+that is, the generated patch is only guaranteed to safely transform the given
+source to the given target. Do not expect it to give the result you expect on
+another source/target pair!
