@@ -14,7 +14,7 @@ Its features are:
 
 * {de,}serialization of JSON Patch and JSON Merge Patch instances with Jackson;
 * full support for RFC 6902 operations, including `test`;
-* JSON "diff" (RFC 6902 an custom) with custom operations factorization.
+* JSON "diff" (RFC 6902 and custom) with custom operations factorization.
 
 ## Versions
 
