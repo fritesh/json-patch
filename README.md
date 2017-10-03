@@ -8,12 +8,13 @@ This is an implementation of [RFC 6902 (JSON Patch)](http://tools.ietf.org/html/
 7386 (JSON
 Merge Patch)](http://tools.ietf.org/html/rfc7386) written in Java,
 which uses [Jackson](https://github.com/FasterXML/jackson-databind) (2.2.x) at its core.
+There are a few customization for more accuracy but it still supports all the original standards of the implementations mentioned. 
 
 Its features are:
 
 * {de,}serialization of JSON Patch and JSON Merge Patch instances with Jackson;
 * full support for RFC 6902 operations, including `test`;
-* JSON "diff" (RFC 6902 only) with custom operations factorization.
+* JSON "diff" (RFC 6902 an custom) with custom operations factorization.
 
 ## Versions
 
@@ -27,6 +28,12 @@ In-progress
 
 When computing the difference between two JSON texts (in the form of `JsonNode` instances), the diff
 will factorize value removals and additions as moves and copies.
+
+## JSON "diff" customization
+
+The Custom diff only compute difference in form of add, remove and replace. The add, remove and replace operation is same as specified in rfc6901 but only in case of object,there is change in case of array diff operations the remoe and replace operations have attached extra {Key: value} of original_value: value which helps us to keep track of the state before the difference was calculated. 
+
+In case of Absense of Key the Algorithm treats whole object as Key and cant be used for calculation fine-grained difference between the JsonNode
 
 
 This Library Supports Custom Operation in Case of Array
