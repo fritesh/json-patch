@@ -448,7 +448,7 @@ public final class JsonDiff {
 			for (int i = 0; i < targetSize; i++) {
 				processor.valueAdded(pointer.append("-"), target.get(i));
 			}
-		} else if (sourceSize != 0 && targetSize == 1) {
+		} else if (sourceSize != 0 && targetSize == 0) {
 			// IF Every Element is Remove Element
 			for (int k = 0; k < sourceSize; k++) {
 				processor.arrayObjectValueRemoved(pointer.append(k), source.get(k));
