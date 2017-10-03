@@ -29,11 +29,29 @@ In-progress
 When computing the difference between two JSON texts (in the form of `JsonNode` instances), the diff
 will factorize value removals and additions as moves and copies.
 
+For instance, given this node to patch:
+
+```json
+{ "a": "b" }
+```
+
+in order to obtain:
+
+```json
+{ "c": "b" }
+```
+
+the implementation will return the following patch:
+
+```json
+[ { "op": "move", "from": "/a", "path": "/c" } ]
+```
+
 ## JSON "diff" customization
 
-The Custom diff only compute difference in form of add, remove and replace. The add, remove and replace operation is same as specified in rfc6901 but only in case of object,there is change in case of array diff operations the remoe and replace operations have attached extra {Key: value} of original_value: value which helps us to keep track of the state before the difference was calculated. 
+The Custom diff only compute difference in form of add, remove and replace. The add, remove and replace operation is same as specified in rfc6901 but only in case of object,there is change in case of array diff operations the remove and replace operations have attached extra {Key: value} of original_value: value which helps us to keep track of the state before the difference was calculated. 
 
-In case of Absense of Key the Algorithm treats whole object as Key and cant be used for calculation fine-grained difference between the JsonNode
+In case of Absense of Key the Algorithm treats whole object as Key and cant be used for calculation of fine-grained difference between the JsonNode
 
 
 This Library Supports Custom Operation in Case of Array
@@ -94,11 +112,6 @@ final JsonPatch patch = JsonDiff.asJsonPatch(source, target);
 final JsonNode patchNode = JsonDiff.asJson(source, target);
 ```
 
-**Important note**: the API offers **no guarantee at all** about patch "reuse";
-that is, the generated patch is only guaranteed to safely transform the given
-source to the given target. Do not expect it to give the result you expect on
-another source/target pair!
-
 ### JSON Merge Patch
 
 As for `JsonPatch`, you may use either Jackson or "direct" initialization:
@@ -128,7 +141,9 @@ final JsonNode patchNode = JsonDiff.asJson(source, target, attributeKeyFieldMap)
 attributeKeyFieldMap is the Map of <JsonPointer,String> ``read RFC6902 for JsonPointer.
 JsonPointer contains all the Key Fields Inside an Array object which you want to treat as primary Key.
 
-**Important note**: the API offers **no guarantee at all** about patch "reuse";
+###Important note
+
+The API offers **no guarantee at all** about patch "reuse";
 that is, the generated patch is only guaranteed to safely transform the given
 source to the given target. Do not expect it to give the result you expect on
 another source/target pair!
