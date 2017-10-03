@@ -138,7 +138,7 @@ The main class is `JsonDiff`. It returns the patch as a `JsonPatch` or as a `Jso
 final JsonPatch patch = JsonDiff.asJsonPatch(source, target, attributeKeyFieldMap);
 final JsonNode patchNode = JsonDiff.asJson(source, target, attributeKeyFieldMap);
 ```
-attributeKeyFieldMap is the Map of <JsonPointer,String> ``read RFC6902 for JsonPointer.
+attributeKeyFieldMap is the Map of <JsonPointer,String>, read RFC6902 for JsonPointer.
 JsonPointer contains all the Key Fields Inside an Array object which you want to treat as primary Key.
 
 ### Important note
