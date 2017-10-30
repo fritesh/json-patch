@@ -19,6 +19,14 @@
 
 package com.github.fge.jsonpatch;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,12 +34,12 @@ import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.github.fge.jackson.JacksonUtils;
+import com.github.fge.jackson.jsonpointer.JsonPointer;
+import com.github.fge.jackson.jsonpointer.JsonPointerException;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.collect.ImmutableList;
-
-import java.io.IOException;
-import java.util.List;
+import com.google.common.collect.Lists;
 
 /**
  * Implementation of JSON Patch
@@ -95,82 +103,192 @@ public final class JsonPatch
     private static final MessageBundle BUNDLE
         = MessageBundles.getBundle(JsonPatchMessages.class);
 
-    /**
-     * List of operations
-     */
-    private final List<JsonPatchOperation> operations;
+	Logger logger = LoggerFactory.getLogger(JsonPatch.class);
+	/**
+	 * List of operations
+	 */
+	private final List<JsonPatchOperation> operations;
 
-    /**
-     * Constructor
-     *
+	/**
+	 * Constructor
+	 *
      * <p>Normally, you should never have to use it.</p>
-     *
+	 *
      * @param operations the list of operations for this patch
-     * @see JsonPatchOperation
-     */
-    @JsonCreator
+	 * @see JsonPatchOperation
+	 */
+	@JsonCreator
     public JsonPatch(final List<JsonPatchOperation> operations)
     {
-        this.operations = ImmutableList.copyOf(operations);
-    }
+		this.operations = ImmutableList.copyOf(operations);
+	}
 
-    /**
-     * Static factory method to build a JSON Patch out of a JSON representation
-     *
+	/**
+	 * Static factory method to build a JSON Patch out of a JSON representation
+	 *
      * @param node the JSON representation of the generated JSON Patch
-     * @return a JSON Patch
+	 * @return a JSON Patch
      * @throws IOException input is not a valid JSON patch
      * @throws NullPointerException input is null
-     */
+	 */
     public static JsonPatch fromJson(final JsonNode node)
         throws IOException
     {
-        BUNDLE.checkNotNull(node, "jsonPatch.nullInput");
+		BUNDLE.checkNotNull(node, "jsonPatch.nullInput");
         return JacksonUtils.getReader().withType(JsonPatch.class)
             .readValue(node);
-    }
+	}
 
-    /**
-     * Apply this patch to a JSON value
-     *
+	/**
+	 * Apply this patch to a JSON value
+	 *
      * @param node the value to apply the patch to
-     * @return the patched JSON value
-     * @throws JsonPatchException failed to apply patch
-     * @throws NullPointerException input is null
-     */
-    public JsonNode apply(final JsonNode node)
-        throws JsonPatchException
-    {
-        BUNDLE.checkNotNull(node, "jsonPatch.nullInput");
-        JsonNode ret = node;
-        for (final JsonPatchOperation operation: operations)
-            ret = operation.apply(ret);
+	 * @return the patched JSON value
+	 * @throws JsonPatchException failed to apply patch
+	 * @throws JsonPointerException
+	 * @throws NullPointerException input is null
+	 */
+	public JsonNode apply(final JsonNode node, final boolean performStrictValidation)
+			throws JsonPatchException, JsonPointerException {
+		BUNDLE.checkNotNull(node, "jsonPatch.nullInput");
+		JsonNode ret = node;
+		for (final JsonPatchOperation operation : operations) {
 
-        return ret;
-    }
+			JsonPointer path = operation.getPath();
+			JsonNode valueLocator = operation.getValue_locator();
 
-    @Override
+			if ((path.toString().contains("?")) || ((path.toString().contains("-")) && (valueLocator != null))) {
+				// value locator for this specific operation
+
+				// get the last of path
+				String[] pathArray = path.toString().split("/");
+				String lastOfPath = pathArray[(pathArray.length - 1)];
+
+				if (valueLocator == null || valueLocator.isNull()) {
+
+					/*
+					 * As value locator is an Array we are going to replace the
+					 * whole Array with a new array
+					 * 
+					 */
+					operation.path = path.parent();
+
+				} else {
+					// new JsonPointer to correct the path
+					JsonPointer newPath = new JsonPointer(path.toString());
+
+					// get the last 2nd part
+					String lastSecondOfPath = null;
+					if (pathArray.length > 1) {
+						lastSecondOfPath = pathArray[(pathArray.length - 2)];
+					}
+
+					// getting the new correct path till "?" of the valid path
+					Boolean unknownLastSecondPartOfPath = false;
+					if (lastOfPath.equals("?") || lastOfPath.equals("-")) {
+						newPath = path.parent();
+
+					} else if (lastSecondOfPath.equals("?") || lastSecondOfPath.equals("-")) {
+						newPath = path.parent().parent();
+						unknownLastSecondPartOfPath = true;
+					} else {
+						throw new IllegalArgumentException(
+								"Custom operation is not valid.Arrtibute cannot be found from ArrayNode.");
+					}
+
+					// valueLocator Must Always be an Object
+					if (valueLocator.isObject()) {
+
+						Boolean located = false;
+						final JsonNode parentNode = newPath.get(ret);
+
+						// All the Field names to List
+						List<String> valueLocator_fieldNames = Lists.newArrayList(valueLocator.fieldNames());
+
+						if (parentNode != null) {
+							// parentNode is Object is Handled at Operation
+							// Level
+							if (parentNode.isArray()) {
+								// Take all the key:values to match from
+								// value_locator to Map.
+								Map<String, JsonNode> valueLocatorMap = new HashMap<String, JsonNode>();
+
+								for (String eachFieldName : valueLocator_fieldNames) {
+									valueLocatorMap.put(eachFieldName, valueLocator.get(eachFieldName));
+								}
+
+								// Take all the key:values to match from given
+								// node
+								// to Map
+								Map<String, JsonNode> eachNodeMap = new HashMap<String, JsonNode>();
+
+								for (int index = 0; index < parentNode.size(); index++) {
+
+									JsonNode eachParentNode = parentNode.get(index);
+									for (String eachFieldName : valueLocator_fieldNames) {
+										eachNodeMap.put(eachFieldName, eachParentNode.get(eachFieldName));
+									}
+									if (eachNodeMap.equals(valueLocatorMap)) {
+										newPath = newPath.append(index);
+										located = true;
+										if (unknownLastSecondPartOfPath) {
+											newPath = newPath.append(lastOfPath);
+
+										}
+										// resetting the operation's path and
+										// value_locator
+										operation.path = newPath;
+										operation.value_locator = null;
+									}
+								}
+							}
+						}
+
+						if (!located) {
+							if (performStrictValidation) {
+								throw new IllegalArgumentException("The given path is Incorrect : " + path.toString());
+							} else {
+								logger.warn("The given path is in-correct ", path.toString());
+							}
+						} else {
+							ret = operation.apply(ret);
+						}
+					} else {
+						throw new IllegalArgumentException("Value Locator Should Always be an Object");
+					}
+
+				}
+
+			} else {
+				ret = operation.apply(ret);
+			}
+
+		}
+		return ret;
+	}
+
+	@Override
     public String toString()
     {
-        return operations.toString();
-    }
+		return operations.toString();
+	}
 
-    @Override
+	@Override
     public void serialize(final JsonGenerator jgen,
         final SerializerProvider provider)
         throws IOException
     {
-        jgen.writeStartArray();
-        for (final JsonPatchOperation op: operations)
-            op.serialize(jgen, provider);
-        jgen.writeEndArray();
-    }
+		jgen.writeStartArray();
+		for (final JsonPatchOperation op : operations)
+			op.serialize(jgen, provider);
+		jgen.writeEndArray();
+	}
 
-    @Override
+	@Override
     public void serializeWithType(final JsonGenerator jgen,
         final SerializerProvider provider, final TypeSerializer typeSer)
         throws IOException
     {
-        serialize(jgen, provider);
-    }
+		serialize(jgen, provider);
+	}
 }

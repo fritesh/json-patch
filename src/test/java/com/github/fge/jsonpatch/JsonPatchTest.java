@@ -22,6 +22,7 @@ package com.github.fge.jsonpatch;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.github.fge.jackson.JacksonUtils;
+import com.github.fge.jackson.jsonpointer.JsonPointerException;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.collect.ImmutableList;
@@ -66,12 +67,12 @@ public final class JsonPatchTest
 
     @Test
     public void cannotPatchNull()
-        throws JsonPatchException
+        throws JsonPatchException, JsonPointerException
     {
         final JsonPatch patch = new JsonPatch(ImmutableList.of(op1, op2));
 
         try {
-            patch.apply(null);
+            patch.apply(null,false);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
             assertEquals(e.getMessage(), BUNDLE.getMessage(
@@ -81,7 +82,7 @@ public final class JsonPatchTest
 
     @Test
     public void operationsAreCalledInOrder()
-        throws JsonPatchException
+        throws JsonPatchException, JsonPointerException
     {
         final JsonNode node1 = FACTORY.textNode("hello");
         final JsonNode node2 = FACTORY.textNode("world");
@@ -93,7 +94,7 @@ public final class JsonPatchTest
         final ArgumentCaptor<JsonNode> captor
             = ArgumentCaptor.forClass(JsonNode.class);
 
-        patch.apply(node1);
+        patch.apply(node1,false);
         verify(op1, only()).apply(same(node1));
         verify(op2, only()).apply(captor.capture());
 
@@ -102,7 +103,7 @@ public final class JsonPatchTest
 
     @Test
     public void whenOneOperationFailsNextOperationIsNotCalled()
-        throws JsonPatchException
+        throws JsonPatchException, JsonPointerException
     {
         final String message = "foo";
         when(op1.apply(any(JsonNode.class)))
@@ -111,7 +112,7 @@ public final class JsonPatchTest
         final JsonPatch patch = new JsonPatch(ImmutableList.of(op1, op2));
 
         try {
-            patch.apply(FACTORY.nullNode());
+            patch.apply(FACTORY.nullNode(), false);
             fail("No exception thrown!!");
         } catch (JsonPatchException e) {
             assertEquals(e.getMessage(), message);

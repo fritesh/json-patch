@@ -2,16 +2,16 @@
 <testng-results skipped="0" failed="0" total="9" passed="9">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="360" started-at="2017-09-29T11:38:39Z" finished-at="2017-09-29T11:38:39Z">
+  <suite name="Default suite" duration-ms="318" started-at="2017-10-30T12:18:33Z" finished-at="2017-10-30T12:18:34Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="360" started-at="2017-09-29T11:38:39Z" finished-at="2017-09-29T11:38:39Z">
+    <test name="Default test" duration-ms="318" started-at="2017-10-30T12:18:33Z" finished-at="2017-10-30T12:18:34Z">
       <class name="com.github.fge.jsonpatch.diffcustom.TestJsonDiff">
-        <test-method status="PASS" signature="initialize()[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="initialize" is-config="true" duration-ms="115" started-at="2017-09-29T17:08:39Z" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="initialize()[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="initialize" is-config="true" duration-ms="42" started-at="2017-10-30T17:48:33Z" finished-at="2017-10-30T17:48:33Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- initialize -->
-        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="Computing" duration-ms="54" started-at="2017-09-29T17:08:39Z" data-provider="Provide Data To Json-Diff" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="Computing" duration-ms="54" started-at="2017-10-30T17:48:34Z" data-provider="Provide Data To Json-Diff" finished-at="2017-10-30T17:48:34Z">
           <params>
             <param index="0">
               <value>
@@ -27,7 +27,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Computing -->
-        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="Computing" duration-ms="13" started-at="2017-09-29T17:08:39Z" data-provider="Provide Data To Json-Diff" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="Computing" duration-ms="8" started-at="2017-10-30T17:48:34Z" data-provider="Provide Data To Json-Diff" finished-at="2017-10-30T17:48:34Z">
           <params>
             <param index="0">
               <value>
@@ -43,7 +43,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Computing -->
-        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="Computing" duration-ms="3" started-at="2017-09-29T17:08:39Z" data-provider="Provide Data To Json-Diff" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="Computing" duration-ms="3" started-at="2017-10-30T17:48:34Z" data-provider="Provide Data To Json-Diff" finished-at="2017-10-30T17:48:34Z">
           <params>
             <param index="0">
               <value>
@@ -59,7 +59,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Computing -->
-        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="Computing" duration-ms="3" started-at="2017-09-29T17:08:39Z" data-provider="Provide Data To Json-Diff" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="Computing" duration-ms="3" started-at="2017-10-30T17:48:34Z" data-provider="Provide Data To Json-Diff" finished-at="2017-10-30T17:48:34Z">
           <params>
             <param index="0">
               <value>
@@ -75,7 +75,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Computing -->
-        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="Computing" duration-ms="3" started-at="2017-09-29T17:08:39Z" data-provider="Provide Data To Json-Diff" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="Computing" duration-ms="4" started-at="2017-10-30T17:48:34Z" data-provider="Provide Data To Json-Diff" finished-at="2017-10-30T17:48:34Z">
           <params>
             <param index="0">
               <value>
@@ -91,7 +91,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Computing -->
-        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="Computing" duration-ms="4" started-at="2017-09-29T17:08:39Z" data-provider="Provide Data To Json-Diff" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="Computing" duration-ms="6" started-at="2017-10-30T17:48:34Z" data-provider="Provide Data To Json-Diff" finished-at="2017-10-30T17:48:34Z">
           <params>
             <param index="0">
               <value>
@@ -107,7 +107,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Computing -->
-        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="Computing" duration-ms="4" started-at="2017-09-29T17:08:39Z" data-provider="Provide Data To Json-Diff" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="Computing(com.fasterxml.jackson.databind.JsonNode, com.fasterxml.jackson.databind.JsonNode)[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="Computing" duration-ms="4" started-at="2017-10-30T17:48:34Z" data-provider="Provide Data To Json-Diff" finished-at="2017-10-30T17:48:34Z">
           <params>
             <param index="0">
               <value>
@@ -123,11 +123,11 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Computing -->
-        <test-method status="PASS" signature="testBugFixWhileOldStateArrayAndNewStateNull()[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="testBugFixWhileOldStateArrayAndNewStateNull" duration-ms="6" started-at="2017-09-29T17:08:39Z" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="testBugFixWhileOldStateArrayAndNewStateNull()[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="testBugFixWhileOldStateArrayAndNewStateNull" duration-ms="6" started-at="2017-10-30T17:48:34Z" finished-at="2017-10-30T17:48:34Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testBugFixWhileOldStateArrayAndNewStateNull -->
-        <test-method status="PASS" signature="testBugFixWhileOldStateNullAndNewStateArray()[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@7c16905e]" name="testBugFixWhileOldStateNullAndNewStateArray" duration-ms="4" started-at="2017-09-29T17:08:39Z" finished-at="2017-09-29T17:08:39Z">
+        <test-method status="PASS" signature="testBugFixWhileOldStateNullAndNewStateArray()[pri:0, instance:com.github.fge.jsonpatch.diffcustom.TestJsonDiff@1753acfe]" name="testBugFixWhileOldStateNullAndNewStateArray" duration-ms="4" started-at="2017-10-30T17:48:34Z" finished-at="2017-10-30T17:48:34Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testBugFixWhileOldStateNullAndNewStateArray -->

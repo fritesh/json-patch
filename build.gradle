@@ -53,7 +53,7 @@ targetCompatibility = "1.6"; // defaults to sourceCompatibility
  * List of dependencies
  */
 dependencies {
-	testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+	compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 
 	
     provided(group: "com.google.code.findbugs", name: "jsr305",
