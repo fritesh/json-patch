@@ -5,7 +5,7 @@
     <classes>
       <class name="com.github.fge.jsonpatch.patchcustom.TestAddOperations">
         <methods>
-          <include name="testAddCompleteArrayOperation"/>
+          <include name="testAddNonExistingPathOperation"/>
         </methods>
       </class> <!-- com.github.fge.jsonpatch.patchcustom.TestAddOperations -->
     </classes>

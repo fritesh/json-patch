@@ -33,7 +33,7 @@ public class TestRemoveOperations {
 
 	}
 
-	// @Test(priority = 1)
+	@Test(priority = 1)
 	public void testRemoveFieldOpeation()
 			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
 

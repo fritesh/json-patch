@@ -36,63 +36,67 @@ import com.google.common.collect.Lists;
 /**
  * JSON Patch {@code add} operation
  *
- * <p>For this operation, {@code path} is the JSON Pointer where the value
- * should be added, and {@code value} is the value to add.</p>
- *
- * <p>Note that if the target value pointed to by {@code path} already exists,
- * it is replaced. In this case, {@code add} is equivalent to {@code replace}.
+ * <p>
+ * For this operation, {@code path} is the JSON Pointer where the value should
+ * be added, and {@code value} is the value to add.
  * </p>
  *
- * <p>Note also that a value will be created at the target path <b>if and only
- * if</b> the immediate parent of that value exists (and is of the correct
- * type).</p>
+ * <p>
+ * Note that if the target value pointed to by {@code path} already exists, it
+ * is replaced. In this case, {@code add} is equivalent to {@code replace}.
+ * </p>
  *
- * <p>Finally, if the last reference token of the JSON Pointer is {@code -} and
- * the immediate parent is an array, the given value is added at the end of the
- * array. For instance, applying:</p>
+ * <p>
+ * Note also that a value will be created at the target path <b>if and only
+ * if</b> the immediate parent of that value exists (and is of the correct
+ * type).
+ * </p>
+ *
+ * <p>
+ * Finally, if the last reference token of the JSON Pointer is {@code -} and the
+ * immediate parent is an array, the given value is added at the end of the
+ * array. For instance, applying:
+ * </p>
  *
  * <pre>
  *     { "op": "add", "path": "/-", "value": 3 }
  * </pre>
  *
- * <p>to:</p>
+ * <p>
+ * to:
+ * </p>
  *
  * <pre>
  *     [ 1, 2 ]
  * </pre>
  *
- * <p>will give:</p>
+ * <p>
+ * will give:
+ * </p>
  *
  * <pre>
  *     [ 1, 2, 3 ]
  * </pre>
  */
-public final class AddOperation
-	extends PathValueOperation 
-{
-	private static final ReferenceToken LAST_ARRAY_ELEMENT
-		= ReferenceToken.fromRaw("-");
-	
+public final class AddOperation extends PathValueOperation {
+	private static final ReferenceToken LAST_ARRAY_ELEMENT = ReferenceToken.fromRaw("-");
+
 	private ObjectMapper objectMapper = new ObjectMapper();
 
 	@JsonCreator
-    public AddOperation(@JsonProperty("path") final JsonPointer path,
-        @JsonProperty("value") final JsonNode value)
-    {
+	public AddOperation(@JsonProperty("path") final JsonPointer path, @JsonProperty("value") final JsonNode value) {
 		super("add", path, value);
 	}
 
 	@Override
-    public JsonNode apply(final JsonNode node)
-        throws JsonPatchException
-    {
-		if (path.isEmpty()) 
+	public JsonNode apply(final JsonNode node) throws JsonPatchException {
+		if (path.isEmpty())
 			return value;
-		
+
 		/*
-		 * OLD-IMPLENETATION TO THROW ERROR
-		 * Check the parent node: it must exist and be a container (ie an array
-		 * or an object) for the add operation to work.
+		 * OLD-IMPLENETATION TO THROW ERROR Check the parent node: it must exist
+		 * and be a container (ie an array or an object) for the add operation
+		 * to work.
 		 */
 		final JsonNode parentNode = path.parent().path(node);
 		if (parentNode.isMissingNode()) {
@@ -215,26 +219,36 @@ public final class AddOperation
 	 * @throws JsonPatchException
 	 */
 	private JsonNode addToObject(JsonNode node, JsonPointer newPath, JsonNode newValue) throws JsonPatchException {
-		String lastOfNewPath = Iterables.getLast(newPath).getToken().getRaw();
-		final JsonNode ret = node.deepCopy();
 
-		if (!newPath.get(ret).isContainerNode()) {
-			throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.parentNotContainer"));
+		System.out.println(node);
+		System.out.println(newPath);
+		System.out.println(newValue);
+		String lastOfPath = Iterables.getLast(newPath).getToken().getRaw();
+		final JsonNode ret = node.deepCopy();
+		JsonNode target = objectMapper.createObjectNode();
+		if (newPath.get(ret).isObject()) {
+			target = newPath.get(ret);
+		} else {
+			target = newPath.parent().get(ret);
 		}
-		final ObjectNode target = (ObjectNode) newPath.get(ret);
-		if (newValue.isArray()) {
-			if (!lastOfNewPath.equals("-")) {
-				target.put(lastOfNewPath, newValue);
+
+		if (lastOfPath.equals("-")) {
+			if (newValue.isArray()) {
+				throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.noSuchIndex"));
+			}
+		} else if (lastOfPath.matches("[0-9]+")) {
+			if (newValue.isObject()) {
+				// All the Field names to List
+				List<String> fieldNames = Lists.newArrayList(newValue.fieldNames());
+				for (String fieldName : fieldNames) {
+					((ObjectNode) target).put(fieldName, newValue.get(fieldName));
+				}
+			} else {
+				throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.noSuchIndex"));
 			}
 		} else {
-			// All the Field names to List
-			List<String> fieldNames = Lists.newArrayList(newValue.fieldNames());
-			for (String fieldName : fieldNames) {
-				target.put(fieldName, newValue.get(fieldName));
-			}
-
+			((ObjectNode) target).put(lastOfPath, newValue);
 		}
-
 		return ret;
 
 	}
