@@ -1,3 +1,9 @@
+##1.11
+* Addition of new implemtation of json-patch supports a new field name value_locator, more accurate in case of locating and applying patch.
+
+##1.10
+* Addition of new implementation of json-diff more accurate.
+
 ## 1.9
 
 * Completely new JSON diff implementation; less smart than the previous one but
