@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jackson.jsonpointer.JsonPointerException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 
@@ -35,7 +34,7 @@ public class TestRemoveOperations {
 
 	@Test(priority = 1)
 	public void testRemoveFieldOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException {
 
 		Boolean performStrictValidation = false;
 
@@ -57,7 +56,7 @@ public class TestRemoveOperations {
 
 	@Test(priority = 2)
 	public void testRemoveObjectOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -78,7 +77,7 @@ public class TestRemoveOperations {
 
 	@Test(priority = 3)
 	public void testRemoveCompleteArrayOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper

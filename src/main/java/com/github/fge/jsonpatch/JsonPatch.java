@@ -187,8 +187,7 @@ public final class JsonPatch implements JsonSerializable {
 	 * @throws NullPointerException
 	 *             input is null
 	 */
-	public JsonNode apply(final JsonNode node, final boolean performStrictValidation)
-			throws JsonPatchException, JsonPointerException {
+	public JsonNode apply(final JsonNode node, final boolean performStrictValidation) throws JsonPatchException {
 		BUNDLE.checkNotNull(node, "jsonPatch.nullInput");
 		JsonNode ret = node.deepCopy();
 		for (final JsonPatchOperation operation : operations) {

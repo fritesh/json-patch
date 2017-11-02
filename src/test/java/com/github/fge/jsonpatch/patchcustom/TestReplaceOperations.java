@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jackson.jsonpointer.JsonPointerException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 
@@ -43,7 +42,7 @@ public class TestReplaceOperations {
 
 	@Test(priority = 1)
 	public void testReplaceFieldOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -64,7 +63,7 @@ public class TestReplaceOperations {
 
 	@Test(priority = 2)
 	public void testReplaceObjectOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -85,7 +84,7 @@ public class TestReplaceOperations {
 
 	@Test(priority = 3)
 	public void testReplaceCompleteArrayOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper

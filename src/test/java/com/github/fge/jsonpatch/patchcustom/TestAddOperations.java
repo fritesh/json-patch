@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jackson.jsonpointer.JsonPointerException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 
@@ -35,7 +34,7 @@ public class TestAddOperations {
 
 	@Test(priority = 1)
 	public void testAddFieldOperation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException  {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -57,7 +56,7 @@ public class TestAddOperations {
 
 	@Test(priority = 2)
 	public void testAddObjectOperation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException  {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -78,7 +77,7 @@ public class TestAddOperations {
 
 	@Test(priority = 3)
 	public void testAddCompleteArrayOperation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException  {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -99,7 +98,7 @@ public class TestAddOperations {
 
 	@Test(priority = 4)
 	public void testAddDuplicateObjectOperation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException  {
 		// should replace value
 
 		Boolean performStrictValidation = false;
@@ -122,7 +121,7 @@ public class TestAddOperations {
 
 	@Test(priority = 5)
 	public void testAddDuplicateArrayObjectOperation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException  {
 		// should be skipped
 
 		Boolean performStrictValidation = false;
@@ -145,7 +144,7 @@ public class TestAddOperations {
 
 	@Test(priority = 6)
 	public void testAddNonExistingPathOperation()
-			throws JsonProcessingException, IOException, JsonPatchException, JsonPointerException {
+			throws JsonProcessingException, IOException, JsonPatchException  {
 		// Should create non-existing path
 		Boolean performStrictValidation = false;
 
