@@ -220,9 +220,6 @@ public final class AddOperation extends PathValueOperation {
 	 */
 	private JsonNode addToObject(JsonNode node, JsonPointer newPath, JsonNode newValue) throws JsonPatchException {
 
-		System.out.println(node);
-		System.out.println(newPath);
-		System.out.println(newValue);
 		String lastOfPath = Iterables.getLast(newPath).getToken().getRaw();
 		final JsonNode ret = node.deepCopy();
 		JsonNode target = objectMapper.createObjectNode();

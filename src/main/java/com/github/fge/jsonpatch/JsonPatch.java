@@ -163,6 +163,26 @@ public final class JsonPatch implements JsonSerializable {
 	 * @return the patched JSON value
 	 * @throws JsonPatchException
 	 *             failed to apply patch
+	 * @throws NullPointerException
+	 *             input is null
+	 */
+	public JsonNode apply(final JsonNode node) throws JsonPatchException {
+		BUNDLE.checkNotNull(node, "jsonPatch.nullInput");
+		JsonNode ret = node;
+		for (final JsonPatchOperation operation : operations)
+			ret = operation.apply(ret);
+
+		return ret;
+	}
+
+	/**
+	 * Apply this patch to a JSON value
+	 *
+	 * @param node
+	 *            the value to apply the patch to
+	 * @return the patched JSON value
+	 * @throws JsonPatchException
+	 *             failed to apply patch
 	 * @throws JsonPointerException
 	 * @throws NullPointerException
 	 *             input is null
