@@ -220,31 +220,45 @@ public final class AddOperation extends PathValueOperation {
 	 */
 	private JsonNode addToObject(JsonNode node, JsonPointer newPath, JsonNode newValue) throws JsonPatchException {
 
-		String lastOfPath = Iterables.getLast(newPath).getToken().getRaw();
 		final JsonNode ret = node.deepCopy();
 		JsonNode target = objectMapper.createObjectNode();
-		if (newPath.get(ret).isObject()) {
-			target = newPath.get(ret);
-		} else {
-			target = newPath.parent().get(ret);
-		}
 
-		if (lastOfPath.equals("-")) {
+		if (newPath.isEmpty()) {
+
 			if (newValue.isArray()) {
 				throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.noSuchIndex"));
-			}
-		} else if (lastOfPath.matches("[0-9]+")) {
-			if (newValue.isObject()) {
-				// All the Field names to List
+			} else {
 				List<String> fieldNames = Lists.newArrayList(newValue.fieldNames());
 				for (String fieldName : fieldNames) {
-					((ObjectNode) target).put(fieldName, newValue.get(fieldName));
+					((ObjectNode) ret).put(fieldName, newValue.get(fieldName));
 				}
-			} else {
-				throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.noSuchIndex"));
 			}
 		} else {
-			((ObjectNode) target).put(lastOfPath, newValue);
+			String lastOfPath = Iterables.getLast(newPath).getToken().getRaw();
+			if (newPath.get(ret).isObject()) {
+				target = newPath.get(ret);
+			} else {
+				target = newPath.parent().get(ret);
+			}
+
+			if (lastOfPath.equals("-")) {
+				if (newValue.isArray()) {
+					throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.noSuchIndex"));
+				}
+			} else if (lastOfPath.matches("[0-9]+")) {
+				if (newValue.isObject()) {
+					// All the Field names to List
+					List<String> fieldNames = Lists.newArrayList(newValue.fieldNames());
+					for (String fieldName : fieldNames) {
+						((ObjectNode) target).put(fieldName, newValue.get(fieldName));
+					}
+				} else {
+					throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.noSuchIndex"));
+				}
+			} else {
+				((ObjectNode) target).put(lastOfPath, newValue);
+			}
+
 		}
 		return ret;
 
