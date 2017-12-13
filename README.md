@@ -1,6 +1,6 @@
 ## Ritesh builds now enabled
 
-Builds are now verified by Ritesh
+Builds are now verified by Confluxsys
 
 ## What this is
 

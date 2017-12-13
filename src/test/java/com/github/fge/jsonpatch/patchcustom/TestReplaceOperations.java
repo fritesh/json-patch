@@ -41,8 +41,7 @@ public class TestReplaceOperations {
 	}
 
 	@Test(priority = 1)
-	public void testReplaceFieldOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException {
+	public void testReplaceFieldOpeation() throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -51,9 +50,9 @@ public class TestReplaceOperations {
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/replaceOperations1.json"));
 
 		logger.info("Before Applying Patch: {}", originalData);
+		logger.info("Operations: {}", Operations);
 		patch = JsonPatch.fromJson(Operations);
 		patched = patch.apply(originalData, performStrictValidation);
-		  
 
 		JsonNode expectedOutput = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/expected/expectedReplace1.json"));
@@ -62,8 +61,7 @@ public class TestReplaceOperations {
 	}
 
 	@Test(priority = 2)
-	public void testReplaceObjectOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException {
+	public void testReplaceObjectOpeation() throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -72,9 +70,9 @@ public class TestReplaceOperations {
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/replaceOperations2.json"));
 
 		logger.info("Before Applying Patch: {}", originalData);
+		logger.info("Operations: {}", Operations);
 		patch = JsonPatch.fromJson(Operations);
 		patched = patch.apply(originalData, performStrictValidation);
-		  
 
 		JsonNode expectedOutput = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/expected/expectedReplace2.json"));
@@ -83,8 +81,7 @@ public class TestReplaceOperations {
 	}
 
 	@Test(priority = 3)
-	public void testReplaceCompleteArrayOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException {
+	public void testReplaceCompleteArrayOpeation() throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -93,9 +90,9 @@ public class TestReplaceOperations {
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/replaceOperations3.json"));
 
 		logger.info("Before Applying Patch: {}", originalData);
+		logger.info("Operations: {}", Operations);
 		patch = JsonPatch.fromJson(Operations);
 		patched = patch.apply(originalData, performStrictValidation);
-		  
 
 		JsonNode expectedOutput = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/expected/expectedReplace3.json"));

@@ -39,10 +39,15 @@ public class JsonDataProvider {
 		JsonNode beforeNode6 = objectMapper.readTree(new File("src/test/resources/jsonpatch/diffcustom/old6.json"));
 		JsonNode afterNode6 = objectMapper.readTree(new File("src/test/resources/jsonpatch/diffcustom/new6.json"));
 
-				JsonNode sampleold = objectMapper.readTree(new File("src/test/resources/jsonpatch/diffcustom/sampleold.json"));
-				JsonNode samplenew = objectMapper.readTree(new File("src/test/resources/jsonpatch/diffcustom/samplenew.json"));
-		return new Object[][] { { beforeNode1, afterNode1 }, { beforeNode2, afterNode2 }, { beforeNode3, afterNode3 }, { beforeNode4, afterNode4 },
-				{ beforeNode5, afterNode5 }, { beforeNode6, afterNode6 },{sampleold,samplenew} };
+		JsonNode sampleold = objectMapper.readTree(new File("src/test/resources/jsonpatch/diffcustom/sampleold.json"));
+		JsonNode samplenew = objectMapper.readTree(new File("src/test/resources/jsonpatch/diffcustom/samplenew.json"));
+		return new Object[][] { { beforeNode1, afterNode1 },
+				// { beforeNode2, afterNode2 }, { beforeNode3, afterNode3 }, {
+				// beforeNode4, afterNode4 },
+				// { beforeNode5, afterNode5 },
+				// { beforeNode6, afterNode6 },
+				// {sampleold,samplenew}
+		};
 	}
 
 }

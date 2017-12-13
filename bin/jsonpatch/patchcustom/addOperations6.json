@@ -1,9 +1,0 @@
-[
-	{
-		"op": "add",
-		"path": "/Roles/0/a/0/b/-",
-		"value": {
-			"ROLE": "ETL SUPPORT"
-		}
-	}
-]

@@ -208,6 +208,15 @@ public final class JsonPatch implements JsonSerializable {
 		return ret;
 	}
 
+	/**
+	 * This method corrects the path with the help of value_locator
+	 * 
+	 * @param path
+	 * @param node
+	 * @param valueLocator
+	 * @param performStrictValidation
+	 * @return
+	 */
 	private JsonPointer pathFixer(JsonPointer path, JsonNode node, JsonNode valueLocator,
 			boolean performStrictValidation) {
 
@@ -279,7 +288,6 @@ public final class JsonPatch implements JsonSerializable {
 		return operations.toString();
 	}
 
-	@Override
 	public void serialize(final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
 		jgen.writeStartArray();
 		for (final JsonPatchOperation op : operations)
@@ -287,7 +295,6 @@ public final class JsonPatch implements JsonSerializable {
 		jgen.writeEndArray();
 	}
 
-	@Override
 	public void serializeWithType(final JsonGenerator jgen, final SerializerProvider provider,
 			final TypeSerializer typeSer) throws IOException {
 		serialize(jgen, provider);

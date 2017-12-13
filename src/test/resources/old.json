@@ -1,0 +1,38 @@
+{
+	"Permission Set Name": "OIM Dev Users in Pune test_2",
+	"Display Name": "OIM Dev Users in Pune test_2 Disp",
+	"ID": "162a1d94-1188-46hb-a38f-017e3er1111",
+	"Description": "OIM Dev Users in Pune test_2 Desc",
+	"Application": "1",
+	"Environment Type": "Development",
+	"Environment Name": "All",
+	"Data Center": "Pune",
+	"Operating System Type": "All",
+	"Operating System Name": "All",
+	"Risk Level": "Low",
+	"Definition Update Time": 15098876667,
+	"Server Status": "All",
+	"Originating Source": "All",
+	"Technical Service": "All",
+	"UPM Server": 104,
+	"Provision Netgroup": false,
+	"Service Account": true,
+	"UD_PSET_PSC": [
+		{
+			"Command": "su-asadm1",
+			"Command Description": "OIM user login"
+		},
+		{
+			"Command": "su-oracle",
+			"Command Description": "OIM database server login"
+		}
+	],
+	"UD_PSET_UEG": [
+		{
+			"Group Name": "cn=OIMUser,ou=example,ou=com"
+		},
+		{
+			"Group Name": "cn=Developers,ou=example,ou=com"
+		}
+	]
+}

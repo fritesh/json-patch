@@ -1,10 +1,10 @@
 [
-	{
-		"op": "add",
-		"path": "/Roles/-/orBidNos",
-		"value": "xxx",
-		"value_locator": {
-			"ROLE": "Network Admin"
-		}
-	}
+	 {
+          "op": "add",
+          "path": "/Roles/-/Username",
+          "value": "testcase",
+          "value_locator": {
+            "ROLE": "Network Admin"
+          }
+        }
 ]

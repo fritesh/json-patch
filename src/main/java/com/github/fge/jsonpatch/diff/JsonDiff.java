@@ -367,7 +367,7 @@ public final class JsonDiff {
 			if (secondType == NodeType.ARRAY) {
 				for (JsonNode eachElementAtTarget : target) {
 					// Adding all Target Array Object one at a time
-					processor.valueAdded(pointer, eachElementAtTarget);
+					processor.valueAdded(pointer.append("-"), eachElementAtTarget);
 				}
 				return;
 			} else {
@@ -513,7 +513,10 @@ public final class JsonDiff {
 			}
 		} else {
 			// Few Added, Few Removed Elements
-			if (attributesKeyFields.containsKey(pointer)) {
+			// Null check to Avoid null pointer exception to Map
+			if (attributesKeyFields == null) {
+				generateArrayDiffForNullOrNoKey(processor, pointer, source, target);
+			} else if (attributesKeyFields.containsKey(pointer)) {
 
 				// Get the Appropriate Key From Map
 				String keyFieldValue = attributesKeyFields.get(pointer);
@@ -575,36 +578,35 @@ public final class JsonDiff {
 			logger.debug("Key Field Not Available for Pointer at  : {}", pointer);
 			// Treat Whole Thing as an Key itself
 
-			List<JsonNode> targetList = Lists.newArrayList(target.iterator());
-			List<JsonNode> sourceList = new ArrayList<JsonNode>();
+			List<JsonNode> toAddList = Lists.newArrayList(target.iterator());
+			List<JsonNode> toRemoveList = new ArrayList<JsonNode>();
 			//
 			// for (JsonNode eachTargetElement : target) {
 			// // add All Target Elements to TargetList
 			// targetList.add(eachTargetElement);
 			// }
 			for (JsonNode eachSourceElement : source) {
-				if (!targetList.contains(eachSourceElement)) {
-					// if source contains elements that are not in targetList
-					// add them to sourceList i.e list of Deleted String
-					sourceList.add(eachSourceElement);
-				} else {
+				if (toAddList.contains(eachSourceElement)) {
 					// if source contains elements that are present in
 					// targetList then remove from targetList i.e. at the end of
 					// for-loop we will get list of added object in targetList
-					targetList.remove(eachSourceElement);
+					toAddList.remove(eachSourceElement);
+
+				} else {
+					// if source contains elements that are not in targetList
+					// add them to sourceList i.e list of Deleted String
+					toRemoveList.add(eachSourceElement);
 				}
 			}
 			// Remove String that is in SourceList
-			for (int k = 0; k < sourceList.size(); k++) {
-				if (sourceList.contains(source.get(k))) {
+			for (int k = 0; k < source.size(); k++) {
+				if (toRemoveList.contains(source.get(k))) {
 					processor.arrayObjectValueRemoved(pointer.append(k), source.get(k));
 				}
 			}
 			// Add Strings that are in target List
-			for (int l = 0; l < targetList.size(); l++) {
-				if (targetList.contains(source.get(l))) {
-					processor.valueAdded(pointer.append("-"), target.get(l));
-				}
+			for (JsonNode eachAdd : toAddList) {
+				processor.valueAdded(pointer.append("-"), eachAdd);
 			}
 		}
 	}

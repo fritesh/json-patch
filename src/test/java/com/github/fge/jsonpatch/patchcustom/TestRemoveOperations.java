@@ -33,8 +33,7 @@ public class TestRemoveOperations {
 	}
 
 	@Test(priority = 1)
-	public void testRemoveFieldOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException {
+	public void testRemoveFieldOpeation() throws JsonProcessingException, IOException, JsonPatchException {
 
 		Boolean performStrictValidation = false;
 
@@ -44,9 +43,9 @@ public class TestRemoveOperations {
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/removeOperations1.json"));
 
 		logger.info("Before Applying Patch: {}", originalData);
+		logger.info("Operations: {}", Operations);
 		patch = JsonPatch.fromJson(Operations);
 		patched = patch.apply(originalData, performStrictValidation);
-		 
 
 		JsonNode expectedOutput = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/expected/expectedRemove1.json"));
@@ -55,8 +54,7 @@ public class TestRemoveOperations {
 	}
 
 	@Test(priority = 2)
-	public void testRemoveObjectOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException {
+	public void testRemoveObjectOpeation() throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -65,9 +63,9 @@ public class TestRemoveOperations {
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/removeOperations2.json"));
 
 		logger.info("Before Applying Patch: {}", originalData);
+		logger.info("Operations: {}", Operations);
 		patch = JsonPatch.fromJson(Operations);
 		patched = patch.apply(originalData, performStrictValidation);
-		 
 
 		JsonNode expectedOutput = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/expected/expectedRemove2.json"));
@@ -76,8 +74,7 @@ public class TestRemoveOperations {
 	}
 
 	@Test(priority = 3)
-	public void testRemoveCompleteArrayOpeation()
-			throws JsonProcessingException, IOException, JsonPatchException {
+	public void testRemoveCompleteArrayOpeation() throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
 		JsonNode originalData = objectMapper
@@ -86,9 +83,9 @@ public class TestRemoveOperations {
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/removeOperations3.json"));
 
 		logger.info("Before Applying Patch: {}", originalData);
+		logger.info("Operations: {}", Operations);
 		patch = JsonPatch.fromJson(Operations);
 		patched = patch.apply(originalData, performStrictValidation);
-		 
 
 		JsonNode expectedOutput = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/expected/expectedRemove3.json"));
