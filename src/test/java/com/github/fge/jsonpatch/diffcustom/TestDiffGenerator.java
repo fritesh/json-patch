@@ -34,7 +34,7 @@ public class TestDiffGenerator {
 		JsonNode newJson = objectMapper.readTree(new File("src/test/resources/new.json"));
 
 		patch = JsonDiff.asJson(oldJson, newJson, null);
-		System.out.println("Aftercalculating diff:    " + patch);
+		logger.info("Aftercalculating diff:   {} ", patch);
 
 	}
 

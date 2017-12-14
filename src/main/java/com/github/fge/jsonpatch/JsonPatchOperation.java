@@ -79,7 +79,6 @@ public abstract class JsonPatchOperation
 	 *
 	 * @param op the operation name
 	 * @param path the JSON Pointer for this operation
-	 * @param value_locator
 	 */
 	protected JsonPatchOperation(final String op, final JsonPointer path) {
 		this.op = op;

@@ -19,7 +19,19 @@
 
 package com.github.fge.jsonpatch.diff;
 
-import com.github.fge.jsonpatch.diff.DiffProcessor;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -38,20 +50,6 @@ import com.google.common.base.Equivalence;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * JSON "diff" implementation
@@ -266,8 +264,8 @@ public final class JsonDiff {
 	// Custom changes to existing Methods
 	/**
 	 * 
-	 * This is a custom Diff generation Function which needs a Map<JsonPointer,
-	 * String> which contains All those primary Keys for the Values in Array
+	 * This is a custom Diff generation Function which needs a Map of JsonPointer and
+	 * String,  which contains All those primary Keys for the Values in Array
 	 * that you want to find difference for.
 	 * 
 	 * @param source

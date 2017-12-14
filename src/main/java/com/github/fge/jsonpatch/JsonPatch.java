@@ -183,9 +183,6 @@ public final class JsonPatch implements JsonSerializable {
 	 * @return the patched JSON value
 	 * @throws JsonPatchException
 	 *             failed to apply patch
-	 * @throws JsonPointerException
-	 * @throws NullPointerException
-	 *             input is null
 	 */
 	public JsonNode apply(final JsonNode node, final boolean performStrictValidation) throws JsonPatchException {
 		BUNDLE.checkNotNull(node, "jsonPatch.nullInput");
