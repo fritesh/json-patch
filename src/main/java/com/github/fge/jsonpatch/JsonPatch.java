@@ -200,7 +200,8 @@ public final class JsonPatch implements JsonSerializable {
 				operation.value_locator = null;
 			}
 			ret = operation.apply(ret);
-
+			operation.path = path;
+			operation.value_locator = valueLocator;
 		}
 		return ret;
 	}
@@ -271,6 +272,7 @@ public final class JsonPatch implements JsonSerializable {
 					"Custom operation is not valid.Arrtibute cannot be found from ArrayNode.");
 		}
 		if (!located) {
+			newPath = path;
 			if (performStrictValidation) {
 				throw new IllegalArgumentException("The given path is Incorrect : " + newPath.toString());
 			} else {
