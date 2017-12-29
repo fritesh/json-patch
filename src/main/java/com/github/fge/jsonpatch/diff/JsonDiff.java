@@ -264,9 +264,9 @@ public final class JsonDiff {
 	// Custom changes to existing Methods
 	/**
 	 * 
-	 * This is a custom Diff generation Function which needs a Map of JsonPointer and
-	 * String,  which contains All those primary Keys for the Values in Array
-	 * that you want to find difference for.
+	 * This is a custom Diff generation Function which needs a Map of
+	 * JsonPointer and String, which contains All those primary Keys for the
+	 * Values in Array that you want to find difference for.
 	 * 
 	 * @param source
 	 *            old json
@@ -376,9 +376,9 @@ public final class JsonDiff {
 		// All Remove Elements
 		else if (source.size() != 0 && target.size() == 0) {
 			if (firstType == NodeType.ARRAY) {
-				for (JsonNode eachElementAtSource : source) {
+				for (int k = 0; k < source.size(); k++) {
 					// Removing Each source Array Objects one at a time
-					processor.arrayObjectValueRemoved(pointer, eachElementAtSource);
+					processor.arrayObjectValueRemoved(pointer.append(k), source.get(k));
 				}
 				// As the whole Node is processed we returned
 				return;
@@ -466,7 +466,17 @@ public final class JsonDiff {
 		 */
 		for (final String field : Sets.difference(secondFields, firstFields)) {
 			// ADD Element
-			processor.valueAdded(pointer.append(field), target.get(field));
+			if ((target.get(field).size() != 0)) {
+				// target removal Array
+				for (int index = 0; index < target.get(field).size(); index++) {
+					// each single array Element Removal
+					processor.valueAdded(pointer.append(field).append(index), target.get(field).get(index));
+				}
+			} else {
+				// IF Empty Object Addition i.e value String, int, etc removal
+				// which has size as zero
+				processor.valueAdded(pointer.append(field), target.get(field));
+			}
 		}
 		/*
 		 * This loop evaluates the common elements in both nodes

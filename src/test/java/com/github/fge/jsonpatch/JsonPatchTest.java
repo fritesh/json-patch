@@ -89,7 +89,7 @@ public final class JsonPatchTest {
 		// assertSame(captor.getValue(), node2);
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void whenOneOperationFailsNextOperationIsNotCalled() throws JsonPatchException, JsonPointerException {
 		final String message = "foo";
 		when(op1.apply(any(JsonNode.class))).thenThrow(new JsonPatchException(message));

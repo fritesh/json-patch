@@ -93,7 +93,7 @@ public class TestRemoveOperations {
 		this.evaluatePatch(patched, expectedOutput);
 	}
 
-	@Test(priority = 2, expectedExceptions = { JsonPatchException.class })
+	@Test(priority = 2)
 	public void testRemoveDuplicateObjectOpeation() throws JsonProcessingException, IOException, JsonPatchException {
 		Boolean performStrictValidation = false;
 
@@ -111,8 +111,6 @@ public class TestRemoveOperations {
 				.readTree(new File("src/test/resources/jsonpatch/patchcustom/expected/expectedRemove2.json"));
 		this.evaluatePatch(patched, expectedOutput);
 		JsonNode jsonPatch = patch.apply(patched, performStrictValidation);
-
-		System.out.println(jsonPatch);
 
 		this.evaluatePatch(jsonPatch, expectedOutput);
 	}

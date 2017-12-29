@@ -196,12 +196,21 @@ public final class JsonPatch implements JsonSerializable {
 			 */
 			if ((path != null) && ((valueLocator != null) && valueLocator.isObject())) {
 				JsonPointer newPath = pathFixer(path, node, valueLocator, performStrictValidation);
-				operation.path = newPath;
-				operation.value_locator = null;
+				if (newPath == null) {
+					operation.path = null;
+
+				} else {
+					operation.path = newPath;
+					operation.value_locator = null;
+				}
 			}
-			ret = operation.apply(ret);
+			if (operation.path != null) {
+				ret = operation.apply(ret);
+
+			}
 			operation.path = path;
 			operation.value_locator = valueLocator;
+
 		}
 		return ret;
 	}
@@ -277,6 +286,7 @@ public final class JsonPatch implements JsonSerializable {
 				throw new IllegalArgumentException("The given path is Incorrect : " + newPath.toString());
 			} else {
 				logger.warn("The given path is in-correct ", newPath.toString());
+				return null;
 			}
 		}
 		return newPath;
