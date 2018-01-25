@@ -35,7 +35,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.github.fge.jackson.JacksonUtils;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
-import com.github.fge.jackson.jsonpointer.JsonPointerException;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.collect.ImmutableList;
@@ -195,7 +194,7 @@ public final class JsonPatch implements JsonSerializable {
 			 * valueLocator should be present and should be an ObjectNode always
 			 */
 			if ((path != null) && ((valueLocator != null) && valueLocator.isObject())) {
-				JsonPointer newPath = pathFixer(path, node, valueLocator, performStrictValidation);
+				JsonPointer newPath = pathFixer(path, ret, valueLocator, performStrictValidation);
 				if (newPath == null) {
 					operation.path = null;
 
@@ -240,7 +239,7 @@ public final class JsonPatch implements JsonSerializable {
 			unknownLastSecondPartOfPath = true;
 		} else {
 			throw new IllegalArgumentException(
-					"Custom operation is not valid.Arrtibute cannot be found from ArrayNode.");
+					"The Custom Opetation is Invalid, The ArrayNode is Missing The Value.");
 		}
 
 		final JsonNode presentNode = newPath.get(node);
@@ -278,7 +277,7 @@ public final class JsonPatch implements JsonSerializable {
 			}
 		} else {
 			throw new IllegalArgumentException(
-					"Custom operation is not valid.Arrtibute cannot be found from ArrayNode.");
+					"Operation is not valid.Arrtibute cannot be found in ArrayNode.");
 		}
 		if (!located) {
 			newPath = path;

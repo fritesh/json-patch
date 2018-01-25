@@ -448,17 +448,27 @@ public final class JsonDiff {
 		 */
 		for (final String field : Sets.difference(firstFields, secondFields)) {
 			// Element To Remove
-			if ((source.get(field).size() != 0)) {
+			JsonNode fieldValue = source.get(field);
+			if ((fieldValue.size() != 0)) {
 				// Source removal Array
-				for (int index = 0; index < source.get(field).size(); index++) {
-					// each single array Element Removal
-					processor.arrayObjectValueRemoved(pointer.append(field).append(index),
-							source.get(field).get(index));
+				if(fieldValue.isArray()){
+					for (int index = 0; index < fieldValue.size(); index++) {
+						// each single array Element Removal
+						processor.arrayObjectValueRemoved(pointer.append(field).append(index),
+								fieldValue.get(index));
+					}
+				}else{
+					for(JsonNode eachField : fieldValue){
+						processor.valueRemoved(pointer.append(field), eachField);
+					}
 				}
+				
 			} else {
 				// IF Empty Object Removal i.e value String, int, etc removal
 				// which has size as zero
-				processor.valueRemoved(pointer.append(field), source.get(field));
+				if(!fieldValue.isContainerNode()){
+					processor.valueRemoved(pointer.append(field), fieldValue);
+				}
 			}
 		}
 		/*
@@ -466,16 +476,26 @@ public final class JsonDiff {
 		 */
 		for (final String field : Sets.difference(secondFields, firstFields)) {
 			// ADD Element
-			if ((target.get(field).size() != 0)) {
-				// target removal Array
-				for (int index = 0; index < target.get(field).size(); index++) {
-					// each single array Element Removal
-					processor.valueAdded(pointer.append(field).append(index), target.get(field).get(index));
+			JsonNode fieldValue = target.get(field);
+			if ((fieldValue.size() != 0)) {
+				if(fieldValue.isArray()){
+					// target removal Array
+					for (int index = 0; index < fieldValue.size(); index++) {
+						// each single array Element Removal
+						processor.valueAdded(pointer.append(field).append(index), fieldValue.get(index));
+					}
+				}else{
+					for(JsonNode eachField : fieldValue){
+						processor.valueAdded(pointer.append(field), eachField);
+					}
 				}
+				
 			} else {
 				// IF Empty Object Addition i.e value String, int, etc removal
 				// which has size as zero
-				processor.valueAdded(pointer.append(field), target.get(field));
+				if(!fieldValue.isContainerNode()){
+					processor.valueAdded(pointer.append(field), fieldValue);
+				}
 			}
 		}
 		/*
