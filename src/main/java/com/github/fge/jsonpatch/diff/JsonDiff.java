@@ -451,22 +451,21 @@ public final class JsonDiff {
 			JsonNode fieldValue = source.get(field);
 			if ((fieldValue.size() != 0)) {
 				// Source removal Array
-				if(fieldValue.isArray()){
+				if (fieldValue.isArray()) {
 					for (int index = 0; index < fieldValue.size(); index++) {
 						// each single array Element Removal
-						processor.arrayObjectValueRemoved(pointer.append(field).append(index),
-								fieldValue.get(index));
+						processor.arrayObjectValueRemoved(pointer.append(field).append(index), fieldValue.get(index));
 					}
-				}else{
-					for(JsonNode eachField : fieldValue){
+				} else {
+					for (JsonNode eachField : fieldValue) {
 						processor.valueRemoved(pointer.append(field), eachField);
 					}
 				}
-				
+
 			} else {
 				// IF Empty Object Removal i.e value String, int, etc removal
 				// which has size as zero
-				if(!fieldValue.isContainerNode()){
+				if (!fieldValue.isContainerNode()) {
 					processor.valueRemoved(pointer.append(field), fieldValue);
 				}
 			}
@@ -478,22 +477,22 @@ public final class JsonDiff {
 			// ADD Element
 			JsonNode fieldValue = target.get(field);
 			if ((fieldValue.size() != 0)) {
-				if(fieldValue.isArray()){
+				if (fieldValue.isArray()) {
 					// target removal Array
 					for (int index = 0; index < fieldValue.size(); index++) {
 						// each single array Element Removal
 						processor.valueAdded(pointer.append(field).append(index), fieldValue.get(index));
 					}
-				}else{
-					for(JsonNode eachField : fieldValue){
+				} else {
+					for (JsonNode eachField : fieldValue) {
 						processor.valueAdded(pointer.append(field), eachField);
 					}
 				}
-				
+
 			} else {
 				// IF Empty Object Addition i.e value String, int, etc removal
 				// which has size as zero
-				if(!fieldValue.isContainerNode()){
+				if (!fieldValue.isContainerNode()) {
 					processor.valueAdded(pointer.append(field), fieldValue);
 				}
 			}
@@ -565,8 +564,8 @@ public final class JsonDiff {
 					for (int j = 0; j < sourceSize; j++) {
 						// Comparing Each source Object with Target Objects
 						// //only Key Comparison
-						objectToRemoveList = (generateObjectInArrayDiffs(processor, pointer.append(j), source.get(j),
-								target, targetObjectList, keyFieldValue, objectToRemoveList, attributesKeyFields));
+						generateObjectInArrayDiffs(processor, pointer.append(j), source.get(j), target,
+								targetObjectList, keyFieldValue, objectToRemoveList, attributesKeyFields);
 					}
 					targetObjectList.removeAll(objectToRemoveList);
 					for (int i = 0; i < targetSize; i++) {
@@ -662,7 +661,7 @@ public final class JsonDiff {
 	 * 
 	 *
 	 */
-	public static List<String> generateObjectInArrayDiffs(final DiffProcessor processor, JsonPointer pointer,
+	public static void generateObjectInArrayDiffs(final DiffProcessor processor, JsonPointer pointer,
 			final JsonNode source, final JsonNode target, final List<String> targetObjectList,
 			final String keyFieldValue, final List<String> objectToRemoveList,
 			final Map<JsonPointer, String> attributesKeyFields) throws IOException, JsonPointerException {
@@ -685,7 +684,7 @@ public final class JsonDiff {
 			// if here means removed from source then perform remove operation
 			processor.arrayObjectValueRemoved(pointer, source);
 		}
-		return objectToRemoveList;
+		return;
 	}
 
 	/**
