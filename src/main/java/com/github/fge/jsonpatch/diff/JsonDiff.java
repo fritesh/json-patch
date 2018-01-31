@@ -558,7 +558,14 @@ public final class JsonDiff {
 					List<String> objectToRemoveList = new LinkedList<String>();
 					// get all Primary Key values from target to a List
 					for (int j = 0; j < targetSize; j++) {
-						targetObjectList.add(target.get(j).get(keyFieldValue).asText());
+						JsonNode targetObject = target.get(j);
+						if (targetObject != null && targetObject.has(keyFieldValue)
+								&& targetObject.get(keyFieldValue).isTextual()) {
+							targetObjectList.add(targetObject.get(keyFieldValue).asText());
+						} else {
+							throw new IllegalArgumentException(
+									"Primary Key was Expected to be present :" + targetObject + " and its value was expected to be string in Primary Key: " + keyFieldValue);
+						}
 					}
 
 					for (int j = 0; j < sourceSize; j++) {
@@ -667,22 +674,28 @@ public final class JsonDiff {
 			final Map<JsonPointer, String> attributesKeyFields) throws IOException, JsonPointerException {
 		int targetSize = target.size();
 		// check weather the key field matches
-		if (targetObjectList.contains(source.get(keyFieldValue).asText())) {
-			// Key Matched
-			objectToRemoveList.add(source.get(keyFieldValue).asText());
-			// check if internal Field Matches
-			for (int i = 0; i < targetSize; i++) {
-				if (target.get(i).get(keyFieldValue).equals(source.get(keyFieldValue))) {
-					if (!target.get(i).equals(source)) {
-						// If Content at Source and Target Does not Matches
-						// Sending Data For Replace Operation
-						generateCustomDiffs(processor, pointer, source, target.get(i));
+		JsonNode sourceObject = source.get(keyFieldValue);
+		if(sourceObject == null || sourceObject.isContainerNode()){
+			throw new IllegalArgumentException(
+					"Primary Key was Expected to be present in :" + sourceObject + " and its value was expected to be string, Primary Key: " + keyFieldValue);
+		}else{
+			if (targetObjectList.contains(sourceObject.asText())) {
+				// Key Matched
+				objectToRemoveList.add(sourceObject.asText());
+				// check if internal Field Matches
+				for (int i = 0; i < targetSize; i++) {
+					if (target.get(i).get(keyFieldValue).equals(sourceObject)) {
+						if (!target.get(i).equals(source)) {
+							// If Content at Source and Target Does not Matches
+							// Sending Data For Replace Operation
+							generateCustomDiffs(processor, pointer, source, target.get(i));
+						}
 					}
 				}
+			} else {
+				// if here means removed from source then perform remove operation
+				processor.arrayObjectValueRemoved(pointer, source);
 			}
-		} else {
-			// if here means removed from source then perform remove operation
-			processor.arrayObjectValueRemoved(pointer, source);
 		}
 		return;
 	}
