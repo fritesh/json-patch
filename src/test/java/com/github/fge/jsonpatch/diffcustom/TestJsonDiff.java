@@ -11,11 +11,11 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import com.github.fge.jsonpatch.JsonDiffException;
 import com.github.fge.jsonpatch.diff.JsonDiff;
 
 public class TestJsonDiff {
@@ -30,7 +30,7 @@ public class TestJsonDiff {
 
 	@Test(dataProvider = "Provide Data To Json-Diff 1", dataProviderClass = JsonDataProvider.class)
 	public void Computing1(JsonNode beforeNode, JsonNode afterNode)
-			throws JsonPointerException, JsonProcessingException, IOException {
+			throws JsonDiffException, IOException, JsonPointerException {
 		JsonNode patch = null;
 		attributesKeyFeilds = new HashMap<JsonPointer, String>();
 		attributesKeyFeilds.put(new JsonPointer("/Profiles"), "Profile");
@@ -39,12 +39,8 @@ public class TestJsonDiff {
 		attributesKeyFeilds.put(new JsonPointer("/User Licenses"), "License");
 		attributesKeyFeilds.put(new JsonPointer("/IT Resource"), null);
 		attributesKeyFeilds.put(new JsonPointer("/Grouppp"), "b");
-		try {
-			patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
-			logger.info("{}", patch.toString());
-		} catch (JsonPointerException e) {
-			logger.warn("WARNING : {} ", e.toString());
-		}
+		patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
+		logger.info("{}", patch.toString());
 
 		JsonNode expectedPatch = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/diffcustom/expected/expectedDiff1.json"));
@@ -57,14 +53,10 @@ public class TestJsonDiff {
 
 	@Test(dataProvider = "Provide Data To Json-Diff 2", dataProviderClass = JsonDataProvider.class)
 	public void Computing2(JsonNode beforeNode, JsonNode afterNode)
-			throws JsonPointerException, JsonProcessingException, IOException {
+			throws JsonDiffException, IOException, JsonPointerException {
 		JsonNode patch = null;
-		try {
-			patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
-			logger.info("{}", patch.toString());
-		} catch (JsonPointerException e) {
-			logger.warn("WARNING : {} ", e.toString());
-		}
+		patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
+		logger.info("{}", patch.toString());
 
 		JsonNode expectedPatch = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/diffcustom/expected/expectedDiff2.json"));
@@ -75,7 +67,7 @@ public class TestJsonDiff {
 
 	@Test(dataProvider = "Provide Data To Json-Diff 3", dataProviderClass = JsonDataProvider.class)
 	public void Computing3(JsonNode beforeNode, JsonNode afterNode)
-			throws JsonPointerException, JsonProcessingException, IOException {
+			throws JsonDiffException, IOException, JsonPointerException{
 
 		attributesKeyFeilds = new HashMap<JsonPointer, String>();
 		attributesKeyFeilds.put(new JsonPointer("/Profiles"), "Profile");
@@ -85,12 +77,8 @@ public class TestJsonDiff {
 		attributesKeyFeilds.put(new JsonPointer("/IT Resource"), null);
 		attributesKeyFeilds.put(new JsonPointer("/Grouppp"), "b");
 		JsonNode patch = null;
-		try {
-			patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
-			logger.info("{}", patch.toString());
-		} catch (JsonPointerException e) {
-			logger.warn("WARNING : {} ", e.toString());
-		}
+		patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
+		logger.info("{}", patch.toString());
 
 		JsonNode expectedPatch = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/diffcustom/expected/expectedDiff3.json"));
@@ -101,14 +89,10 @@ public class TestJsonDiff {
 
 	@Test(dataProvider = "Provide Data To Json-Diff 4", dataProviderClass = JsonDataProvider.class)
 	public void Computing4(JsonNode beforeNode, JsonNode afterNode)
-			throws JsonPointerException, JsonProcessingException, IOException {
+			throws JsonDiffException, IOException, JsonPointerException{
 		JsonNode patch = null;
-		try {
-			patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
-			logger.info("{}", patch.toString());
-		} catch (JsonPointerException e) {
-			logger.warn("WARNING : {} ", e.toString());
-		}
+		patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
+		logger.info("{}", patch.toString());
 
 		JsonNode expectedPatch = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/diffcustom/expected/expectedDiff4.json"));
@@ -119,7 +103,7 @@ public class TestJsonDiff {
 
 	@Test(dataProvider = "Provide Data To Json-Diff 5", dataProviderClass = JsonDataProvider.class)
 	public void Computing5(JsonNode beforeNode, JsonNode afterNode)
-			throws JsonPointerException, JsonProcessingException, IOException {
+			throws JsonDiffException, IOException, JsonPointerException{
 		attributesKeyFeilds = new HashMap<JsonPointer, String>();
 		attributesKeyFeilds.put(new JsonPointer("/Profiles"), "Profile");
 		attributesKeyFeilds.put(new JsonPointer("/Groups"), "Group");
@@ -128,12 +112,8 @@ public class TestJsonDiff {
 		attributesKeyFeilds.put(new JsonPointer("/IT Resource"), null);
 		attributesKeyFeilds.put(new JsonPointer("/Grouppp"), "b");
 		JsonNode patch = null;
-		try {
-			patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
-			logger.info("{}", patch.toString());
-		} catch (JsonPointerException e) {
-			logger.warn("WARNING : {} ", e.toString());
-		}
+		patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
+		logger.info("{}", patch.toString());
 
 		JsonNode expectedPatch = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/diffcustom/expected/expectedDiff5.json"));
@@ -144,14 +124,10 @@ public class TestJsonDiff {
 
 	@Test(dataProvider = "Provide Data To Json-Diff 6", dataProviderClass = JsonDataProvider.class)
 	public void Computing6(JsonNode beforeNode, JsonNode afterNode)
-			throws JsonPointerException, JsonProcessingException, IOException {
+			throws JsonDiffException, IOException, JsonPointerException{
 		JsonNode patch = null;
-		try {
-			patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
-			logger.info("{}", patch.toString());
-		} catch (JsonPointerException e) {
-			logger.warn("WARNING : {} ", e.toString());
-		}
+		patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
+		logger.info("{}", patch.toString());
 
 		JsonNode expectedPatch = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/diffcustom/expected/expectedDiff6.json"));
@@ -162,14 +138,10 @@ public class TestJsonDiff {
 
 	@Test(dataProvider = "Provide Data To Json-Diff 7", dataProviderClass = JsonDataProvider.class)
 	public void Computing7(JsonNode beforeNode, JsonNode afterNode)
-			throws JsonPointerException, JsonProcessingException, IOException {
+			throws JsonDiffException, IOException, JsonPointerException{
 		JsonNode patch = null;
-		try {
-			patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
-			logger.info("{}", patch.toString());
-		} catch (JsonPointerException e) {
-			logger.warn("WARNING : {} ", e.toString());
-		}
+		patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
+		logger.info("{}", patch.toString());
 
 		JsonNode expectedPatch = objectMapper.createArrayNode();
 		// .readTree(new
@@ -181,24 +153,20 @@ public class TestJsonDiff {
 
 	@Test(testName = "Test to fix the bug that old state Key's value is null where as new State's Key-> Value is Array, operation is add and not replace...")
 	public void testBugFixWhileOldStateNullAndNewStateArray()
-			throws JsonPointerException, JsonProcessingException, IOException {
+			throws JsonDiffException, IOException, JsonPointerException{
 		attributesKeyFeilds = null;
 		JsonNode patch = null;
 		JsonNode beforeNode = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/diffcustom/beforeNode.json"));
 		JsonNode afterNode = objectMapper.readTree(new File("src/test/resources/jsonpatch/diffcustom/afterNode.json"));
-		try {
-			patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
-			logger.info("{}", patch.toString());
-		} catch (JsonPointerException e) {
-			logger.warn("WARNING : {} ", e.toString());
-		}
+		patch = JsonDiff.asJson(beforeNode, afterNode, attributesKeyFeilds);
+		logger.info("{}", patch.toString());
 
 	}
 
 	@Test(testName = "Test to fix the bug that old state Key's value is null where as new State's Key-> Value is Array, operation is add and not replace...")
 	public void testBugFixWhileOldStateArrayAndNewStateNull()
-			throws JsonPointerException, JsonProcessingException, IOException {
+			throws JsonDiffException, IOException, JsonPointerException{
 		attributesKeyFeilds = new HashMap<JsonPointer, String>();
 		JsonNode patch = null;
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -207,12 +175,8 @@ public class TestJsonDiff {
 		// New State
 		JsonNode beforeNode = objectMapper
 				.readTree(new File("src/test/resources/jsonpatch/diffcustom/beforeNode.json"));
-		try {
-			patch = JsonDiff.asJson(beforeNode, afterNode, null);
-			logger.info("{}", patch.toString());
-		} catch (JsonPointerException e) {
-			logger.warn("WARNING : {} ", e.toString());
-		}
+		patch = JsonDiff.asJson(beforeNode, afterNode, null);
+		logger.info("{}", patch.toString());
 
 	}
 

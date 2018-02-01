@@ -41,6 +41,7 @@ import com.github.fge.jackson.JsonNumEquals;
 import com.github.fge.jackson.NodeType;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import com.github.fge.jsonpatch.JsonDiffException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchMessages;
 import com.github.fge.msgsimple.bundle.MessageBundle;
@@ -150,10 +151,10 @@ public final class JsonDiff {
 		}
 
 		/*
-		 * If we reach this point, it means that both nodes are the same type,
+		 * in case we reach this point, it means that both nodes are the same type,
 		 * but are not equivalent.
 		 *
-		 * If this is not a container, generate a replace operation.
+		 * in case this is not a container, generate a replace operation.
 		 */
 		if (!source.isContainerNode()) {
 			processor.valueReplaced(pointer, source, target);
@@ -161,7 +162,7 @@ public final class JsonDiff {
 		}
 
 		/*
-		 * If we reach this point, both nodes are either objects or arrays;
+		 * in case we reach this point, both nodes are either objects or arrays;
 		 * delegate.
 		 */
 		if (firstType == NodeType.OBJECT)
@@ -234,6 +235,7 @@ public final class JsonDiff {
 			break;
 		case ARRAY:
 			computeArray(ret, pointer, first, second);
+			break;
 		default:
 			/* nothing */
 		}
@@ -275,21 +277,18 @@ public final class JsonDiff {
 	 * @param attributesKeyFields
 	 *            can be null but needed for denoting custom operations.
 	 * @return JsonNode output in JsonNode format
-	 * @throws JsonPointerException
-	 *             when the pointer cannot be parsed it throws an JsonPointer
-	 *             exception
-	 * 
+	 * @throws JsonDiffException 
 	 * 
 	 */
 	public static JsonNode asJson(final JsonNode source, final JsonNode target,
-			Map<JsonPointer, String> attributesKeyFields) throws JsonPointerException {
+			Map<JsonPointer, String> attributesKeyFields) throws JsonDiffException {
 		final String s;
 
 		try {
 			s = MAPPER.writeValueAsString(asJsonPatch(source, target, attributesKeyFields));
 			return MAPPER.readTree(s);
 		} catch (IOException e) {
-			throw new RuntimeException("cannot generate JSON diff", e);
+			throw new JsonDiffException(BUNDLE.getMessage("jsonDiff.generic"), e);
 		}
 	}
 
@@ -308,11 +307,12 @@ public final class JsonDiff {
 	 * @return JsonPatch output in JsonPatch format
 	 * @throws IOException
 	 * @throws JsonPointerException
+	 * @throws JsonDiffException 
 	 * 
 	 * 
 	 */
 	public static JsonPatch asJsonPatch(final JsonNode source, final JsonNode target,
-			Map<JsonPointer, String> attributesKeyFields) throws IOException, JsonPointerException {
+			Map<JsonPointer, String> attributesKeyFields) throws JsonDiffException {
 		BUNDLE.checkNotNull(source, "common.nullArgument");
 		BUNDLE.checkNotNull(target, "common.nullArgument");
 
@@ -338,11 +338,12 @@ public final class JsonDiff {
 	 *            can be null but needed for denoting custom operations.
 	 * @throws IOException
 	 * @throws JsonPointerException
+	 * @throws JsonDiffException 
 	 * 
 	 */
 	private static void generateDiffs(final DiffProcessor processor, final JsonPointer pointer, final JsonNode source,
 			final JsonNode target, Map<JsonPointer, String> attributesKeyFields)
-			throws IOException, JsonPointerException {
+			throws JsonDiffException {
 
 		if (EQUIVALENCE.equivalent(source, target))
 			return;
@@ -386,7 +387,7 @@ public final class JsonDiff {
 		}
 
 		/*
-		 * If we reach here, it means that neither of both are empty and both
+		 * In case we reach here, it means that neither of both are empty and both
 		 * are not equivalent.
 		 */
 		// This part is Mandatory
@@ -396,7 +397,7 @@ public final class JsonDiff {
 			return;
 		}
 		/*
-		 * If we reach this point, it means that both nodes are the same type,
+		 * In case we reach this point, it means that both nodes are the same type,
 		 * but are not equivalent.
 		 *
 		 * If this is not a container, generate a replace operation.
@@ -433,12 +434,13 @@ public final class JsonDiff {
 	 *            can be null but needed for denoting custom operations.
 	 * @throws IOException
 	 * @throws JsonPointerException
+	 * @throws JsonDiffException 
 	 * 
 	 * 
 	 */
 	private static void generateObjectDiffs(final DiffProcessor processor, final JsonPointer pointer,
 			final ObjectNode source, final ObjectNode target, Map<JsonPointer, String> attributeKeyFields)
-			throws IOException, JsonPointerException {
+			throws JsonDiffException {
 		final Set<String> firstFields = Sets.newTreeSet(Sets.newHashSet(source.fieldNames()));
 		final Set<String> secondFields = Sets.newTreeSet(Sets.newHashSet(target.fieldNames()));
 		// this for loop is for calculating removed elements
@@ -517,13 +519,12 @@ public final class JsonDiff {
 	 *            new json
 	 * @param attributesKeyFields
 	 *            can be null but needed for denoting custom operations.
-	 * @throws IOException
-	 * @throws JsonPointerException
+	 * @throws JsonDiffException 
 	 * 
 	 */
 	private static void generateArrayDiffs(final DiffProcessor processor, final JsonPointer pointer,
 			final ArrayNode source, final ArrayNode target, final Map<JsonPointer, String> attributesKeyFields)
-			throws IOException, JsonPointerException {
+			throws JsonDiffException {
 
 		final int sourceSize = source.size();
 		final int targetSize = target.size();
@@ -563,8 +564,7 @@ public final class JsonDiff {
 								&& targetObject.get(keyFieldValue).isTextual()) {
 							targetObjectList.add(targetObject.get(keyFieldValue).asText());
 						} else {
-							throw new IllegalArgumentException(
-									"Primary Key was Expected to be present :" + targetObject + " and its value was expected to be string in Primary Key: " + keyFieldValue);
+							throw new JsonDiffException(BUNDLE.getMessage("jsonDiff.PrimaryKeyMissing"));
 						}
 					}
 
@@ -663,21 +663,20 @@ public final class JsonDiff {
 	 *            can be null but needed for denoting custom operations.
 	 * 
 	 * @return
-	 * @throws IOException
-	 * @throws JsonPointerException
+	 * 
+	 * @throws JsonDiffException 
 	 * 
 	 *
 	 */
 	public static void generateObjectInArrayDiffs(final DiffProcessor processor, JsonPointer pointer,
 			final JsonNode source, final JsonNode target, final List<String> targetObjectList,
 			final String keyFieldValue, final List<String> objectToRemoveList,
-			final Map<JsonPointer, String> attributesKeyFields) throws IOException, JsonPointerException {
+			final Map<JsonPointer, String> attributesKeyFields) throws JsonDiffException {
 		int targetSize = target.size();
 		// check weather the key field matches
 		JsonNode sourceObject = source.get(keyFieldValue);
 		if(sourceObject == null || sourceObject.isContainerNode()){
-			throw new IllegalArgumentException(
-					"Primary Key was Expected to be present in :" + sourceObject + " and its value was expected to be string, Primary Key: " + keyFieldValue);
+			throw new JsonDiffException(BUNDLE.getMessage("jsonDiff.PrimaryKeyMissing"));
 		}else{
 			if (targetObjectList.contains(sourceObject.asText())) {
 				// Key Matched

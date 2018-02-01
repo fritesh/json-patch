@@ -222,9 +222,10 @@ public final class JsonPatch implements JsonSerializable {
 	 * @param valueLocator
 	 * @param performStrictValidation
 	 * @return
+	 * @throws JsonPatchException
 	 */
 	private JsonPointer pathFixer(JsonPointer path, JsonNode node, JsonNode valueLocator,
-			boolean performStrictValidation) {
+			boolean performStrictValidation) throws JsonPatchException {
 
 		// new JsonPointer to correct the path
 		JsonPointer newPath = path.parent();
@@ -238,8 +239,7 @@ public final class JsonPatch implements JsonSerializable {
 			newPath = newPath.parent();
 			unknownLastSecondPartOfPath = true;
 		} else {
-			throw new IllegalArgumentException(
-					"The Custom Opetation is Invalid, The ArrayNode is Missing The Value.");
+			throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.ArrayNodeMissingValue"));
 		}
 
 		final JsonNode presentNode = newPath.get(node);
@@ -276,13 +276,12 @@ public final class JsonPatch implements JsonSerializable {
 				}
 			}
 		} else {
-			throw new IllegalArgumentException(
-					"Operation is not valid.Arrtibute cannot be found in ArrayNode.");
+			throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.ArrayNodeMissingValue"));
 		}
 		if (!located) {
 			newPath = path;
 			if (performStrictValidation) {
-				throw new IllegalArgumentException("The given path is Incorrect : " + newPath.toString());
+				throw new JsonPatchException(BUNDLE.getMessage("jsonPatch.noSuchPath"));
 			} else {
 				logger.warn("The given path is in-correct ", newPath.toString());
 				return null;
